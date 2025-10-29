@@ -31,6 +31,43 @@
         }
       }
     },
+    "/login-instrutor": {
+      "post": {
+        "summary": "Login do instrutor e geração de token JWT",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "type": "string" },
+                  "senha": { "type": "string" }
+                },
+                "required": ["nome", "senha"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token JWT gerado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Nome e senha são obrigatórios." },
+          "401": { "description": "Nome ou senha inválidos." }
+        }
+      }
+    },
     "/instrutores/{id}": {
       "put": {
         "summary": "Alterar instrutor",
