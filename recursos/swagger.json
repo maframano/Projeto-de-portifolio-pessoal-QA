@@ -1,0 +1,162 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Academia API",
+    "version": "1.0.0",
+    "description": "API para gerenciamento de academia de musculação."
+  },
+  "paths": {
+    "/instrutores": {
+      "post": {
+        "summary": "Cadastrar instrutor",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Instrutor" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Instrutor cadastrado com sucesso!" },
+          "400": { "description": "Dados inválidos." },
+          "500": { "description": "Erro interno." }
+        }
+      },
+      "get": {
+        "summary": "Listar instrutores",
+        "responses": {
+          "200": { "description": "Lista de instrutores." },
+          "500": { "description": "Erro interno." }
+        }
+      }
+    },
+    "/instrutores/{id}": {
+      "put": {
+        "summary": "Alterar instrutor",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Instrutor" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Instrutor alterado." },
+          "400": { "description": "Dados inválidos." },
+          "404": { "description": "Instrutor não encontrado." }
+        }
+      },
+      "delete": {
+        "summary": "Excluir instrutor",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": {
+          "200": { "description": "Instrutor excluído com sucesso!" },
+          "404": { "description": "Instrutor não encontrado." }
+        }
+      }
+    },
+    "/alunos": {
+      "post": {
+        "summary": "Cadastrar aluno",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Aluno" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Aluno cadastrado com sucesso!" },
+          "400": { "description": "Dados inválidos." },
+          "500": { "description": "Erro interno." }
+        }
+      },
+      "get": {
+        "summary": "Listar alunos",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Lista de alunos." },
+          "401": { "description": "Token não fornecido ou inválido." },
+          "500": { "description": "Erro interno." }
+        }
+      }
+    },
+    "/alunos/{id}": {
+      "put": {
+        "summary": "Alterar aluno",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Aluno" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Aluno alterado." },
+          "400": { "description": "Dados inválidos." },
+          "401": { "description": "Token não fornecido ou inválido." },
+          "404": { "description": "Aluno não encontrado." }
+        }
+      },
+      "delete": {
+        "summary": "Excluir aluno",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": {
+          "200": { "description": "Aluno excluído com sucesso!" },
+          "401": { "description": "Token não fornecido ou inválido." },
+          "404": { "description": "Aluno não encontrado." }
+        }
+      }
+    },
+    "/alunos/treino/{nome}": {
+      "get": {
+        "summary": "Consultar treino do aluno pelo nome",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "nome", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Treino personalizado do aluno." },
+          "401": { "description": "Token não fornecido ou inválido." },
+          "404": { "description": "Aluno não encontrado." }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Aluno": {
+        "type": "object",
+        "properties": {
+          "nome": { "type": "string" },
+          "idade": { "type": "integer" },
+          "peso": { "type": "number" },
+          "altura": { "type": "number" }
+        },
+        "required": ["nome", "idade", "peso", "altura"]
+      },
+      "Instrutor": {
+        "type": "object",
+        "properties": {
+          "nome": { "type": "string" },
+          "email": { "type": "string" },
+          "senha": { "type": "string" }
+        },
+        "required": ["nome", "email", "senha"]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
