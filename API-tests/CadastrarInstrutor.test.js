@@ -32,4 +32,88 @@ const { expect } = require('chai');
             })
         })
 
+        describe('POST /instrutores', () => {
+             it('Cadastrar instrutor sem o nome', async() => {
+                const resposta = await request('http://localhost:3000')
+                 .post('/instrutores')
+                    .set('Content-Type', 'application/json')
+                    .send({
+                      
+                         'nome': 'string',
+                         'email': 'teste@academia.com',
+                         'senha': 123456
+                        
+                     })
+                console.log(resposta.status)
+                console.log('Resposta da API:', resposta.body);
+
+                expect(resposta.status).to.equal(400);
+                expect(resposta.body.mensagem).to.equal('Preencha os campos corretamente, não use \"string\" como valor.');
+               
+             })
+
+        })
+
+        describe('POST /instrutores', () => {
+             it('Cadastrar instrutor sem a senha', async() => {
+                const resposta = await request('http://localhost:3000')
+                 .post('/instrutores')
+                    .set('Content-Type', 'application/json')
+                    .send({
+                      
+                         'nome': 'Ana Souza',
+                         'email': 'ana@academia.com',
+                         'senha': 0
+                        
+                     })
+                console.log(resposta.status)
+                console.log('Resposta da API:', resposta.body);
+
+                expect(resposta.status).to.equal(400);
+                expect(resposta.body.mensagem).to.equal('Preencha os campos corretamente, não use \"string\" como valor.');
+       
+            })
+         })
+
+        describe('POST /instrutores', () => {
+             it('Cadastrar instrutor sem preencher nenhum campo', async() => {
+                const resposta = await request('http://localhost:3000')
+                 .post('/instrutores')
+                    .set('Content-Type', 'application/json')
+                    .send({
+                      
+                         'nome': 'string',
+                         'email': 'string',
+                         'senha': 0
+                        
+                     })
+                console.log(resposta.status)
+                console.log('Resposta da API:', resposta.body);
+
+                expect(resposta.status).to.equal(400);
+                expect(resposta.body.mensagem).to.equal('Preencha os campos corretamente, não use \"string\" como valor.');
+       
+            })
+         }) 
+        
+        describe('POST /instrutores', () => {
+             it('Cadastrar instrutor com letras na senha', async() => {
+                const resposta = await request('http://localhost:3000')
+                 .post('/instrutores')
+                    .set('Content-Type', 'application/json')
+                    .send({
+                      
+                         'nome': 'Paulo Rocha',
+                         'email': 'paulo@academia.com',
+                         'senha': "abcde"
+                        
+                     })
+                console.log(resposta.status)
+                console.log('Resposta da API:', resposta.body);
+
+                expect(resposta.status).to.equal(400);
+                expect(resposta.body.mensagem).to.equal('A senha deve ser um número inteiro.');
+       
+            })
+         })  
     })
